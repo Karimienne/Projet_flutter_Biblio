@@ -4,7 +4,7 @@
 
 import '../models/livre.dart';
 
-List<Livre> livresInitiaux = [
+final List<Livre> livresInitiaux = [
   Livre(
     id: '1',
     titre: 'Une si longue lettre',

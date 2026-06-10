@@ -1,7 +1,23 @@
 // lib/models/livre.dart
 
-// Enum des 4 catégories possibles (exigé par le prof)
+import 'package:flutter/material.dart';
+
 enum Categorie { roman, sciences, histoire, autre }
+
+extension CategorieColor on Categorie {
+  Color get couleur {
+    switch (this) {
+      case Categorie.roman:
+        return const Color(0xFFBBDEFB);
+      case Categorie.sciences:
+        return const Color(0xFFC8E6C9);
+      case Categorie.histoire:
+        return const Color(0xFFFFE0B2);
+      case Categorie.autre:
+        return const Color(0xFFE1BEE7);
+    }
+  }
+}
 
 class Livre {
   final String id;
