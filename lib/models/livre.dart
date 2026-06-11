@@ -1,6 +1,6 @@
 // lib/models/livre.dart
 
-// Enum des 4 catégories possibles (exigé par le prof)
+// Enum des 4 catégories possibles
 enum Categorie { roman, sciences, histoire, autre }
 
 class Livre {
@@ -8,11 +8,11 @@ class Livre {
   final String titre;
   final String auteur;
   final Categorie categorie;
-  final String imageAsset; // chemin vers l'image dans assets/
+  final String imageAsset; 
   bool disponible;
-  String? emprunteur; // null safety : peut être absent
+  String? emprunteur; 
 
-  // Constructeur avec paramètres nommés (exigé)
+  // Constructeur avec paramètres nommés 
   Livre({
     required this.id,
     required this.titre,
@@ -23,7 +23,7 @@ class Livre {
     this.emprunteur,
   });
 
-  // Méthode calculée (exigée par le prof)
+  // Méthode calculée 
   String get statut {
     if (disponible) {
       return 'Disponible';
@@ -32,7 +32,7 @@ class Livre {
     }
   }
 
-  // Usage de Map (exigé par le prof)
+  // Usage de Map 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
