@@ -24,11 +24,11 @@ class Livre {
   final String titre;
   final String auteur;
   final Categorie categorie;
-  final String imageAsset; // chemin vers l'image dans assets/
+  final String imageAsset;
   bool disponible;
-  String? emprunteur; // null safety : peut être absent
+  String? emprunteur; 
 
-  // Constructeur avec paramètres nommés (exigé)
+  // Constructeur avec paramètres nommés 
   Livre({
     required this.id,
     required this.titre,
@@ -39,7 +39,7 @@ class Livre {
     this.emprunteur,
   });
 
-  // Méthode calculée (exigée par le prof)
+  // Méthode calculée
   String get statut {
     if (disponible) {
       return 'Disponible';
@@ -48,15 +48,29 @@ class Livre {
     }
   }
 
-  // Usage de Map (exigé par le prof)
+  // Sérialisation vers Map (pour SharedPreferences)
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'titre': titre,
       'auteur': auteur,
       'categorie': categorie.name,
+      'imageAsset': imageAsset,
       'disponible': disponible,
       'emprunteur': emprunteur,
     };
+  }
+
+  // Désérialisation depuis Map (pour SharedPreferences)
+  factory Livre.fromMap(Map<String, dynamic> map) {
+    return Livre(
+      id: map['id'] as String,
+      titre: map['titre'] as String,
+      auteur: map['auteur'] as String,
+      categorie: Categorie.values.firstWhere((c) => c.name == map['categorie']),
+      imageAsset: map['imageAsset'] as String,
+      disponible: map['disponible'] as bool,
+      emprunteur: map['emprunteur'] as String?,
+    );
   }
 }

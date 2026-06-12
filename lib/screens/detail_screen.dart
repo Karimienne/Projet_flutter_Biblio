@@ -71,13 +71,11 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  // ======= LIVE 2 : BASCULE EMPRUNTER / RENDRE =======
   void _basculerEmprunt(Livre livre) {
     if (livre.disponible) {
       if (_emprunteurController.text.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text("Entrez le nom de l'emprunteur")),
+          const SnackBar(content: Text("Entrez le nom de l'emprunteur")),
         );
         return;
       }
@@ -93,11 +91,10 @@ class _DetailScreenState extends State<DetailScreen> {
       });
     }
   }
-  // ======= FIN LIVE 2 =======
 
   @override
   Widget build(BuildContext context) {
-    // Réception de l'argument depuis CatalogueScreen (exigé)
+    // Réception de l'argument depuis CatalogueScreen 
     final Livre livre =
         ModalRoute.of(context)!.settings.arguments as Livre;
 
@@ -173,7 +170,7 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
             const SizedBox(height: 10),
 
-            // Statut — méthode calculée du modèle
+            // Statut  méthode calculée du modèle
             Text(
               livre.statut,
               style: TextStyle(
@@ -187,7 +184,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
             const Divider(height: 36),
 
-            // Champ emprunteur — visible si disponible
+            // Champ emprunteur  visible si disponible
             if (livre.disponible) ...[
               const Text(
                 "Nom de l'emprunteur",

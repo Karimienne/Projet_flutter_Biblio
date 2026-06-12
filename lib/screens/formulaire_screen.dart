@@ -40,7 +40,6 @@ class _FormulaireScreenState extends State<FormulaireScreen> {
     super.dispose();
   }
 
-  // ======= LIVE 1 : CRÉATION AVEC VALIDATION =======
   void _sauvegarder() {
     if (_formKey.currentState!.validate()) {
       final livre = Livre(
@@ -57,7 +56,6 @@ class _FormulaireScreenState extends State<FormulaireScreen> {
       Navigator.pop(context, livre);
     }
   }
-  // ======= FIN LIVE 1 =======
 
   @override
   Widget build(BuildContext context) {
@@ -95,14 +93,13 @@ class _FormulaireScreenState extends State<FormulaireScreen> {
                       borderSide:
                           const BorderSide(color: Color(0xFFE0E0E0))),
                 ),
-                // ======= LIVE 1 : VALIDATOR TITRE =======
+              
                 validator: (valeur) {
                   if (valeur == null || valeur.trim().isEmpty) {
                     return 'Le titre est obligatoire';
                   }
                   return null;
                 },
-                // ======= FIN LIVE 1 =======
               ),
               const SizedBox(height: 16),
 
@@ -127,14 +124,13 @@ class _FormulaireScreenState extends State<FormulaireScreen> {
                       borderSide:
                           const BorderSide(color: Color(0xFFE0E0E0))),
                 ),
-                // ======= LIVE 1 : VALIDATOR AUTEUR =======
+                
                 validator: (valeur) {
                   if (valeur == null || valeur.trim().isEmpty) {
                     return "L'auteur est obligatoire";
                   }
                   return null;
                 },
-                // ======= FIN LIVE 1 =======
               ),
               const SizedBox(height: 16),
 

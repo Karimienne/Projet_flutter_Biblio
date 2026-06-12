@@ -1,6 +1,6 @@
 // lib/data/livres_data.dart
 // Les 6 ouvrages réels collectés
-// Source : babelio.com / wikipedia.org — Juin 2026
+// Source : babelio.com / wikipedia.org - Juin 2026
 
 import '../models/livre.dart';
 

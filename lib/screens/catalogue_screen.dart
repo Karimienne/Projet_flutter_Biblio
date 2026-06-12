@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../data/livres_data.dart';
 import '../models/livre.dart';
 import '../widgets/livre_card.dart';
@@ -15,6 +17,29 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
   List<Livre> _livresFiltres = List.from(livresInitiaux);
   bool _afficherDispo = false;
   final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _chargerLivres();
+  }
+
+  Future<void> _chargerLivres() async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = prefs.getString('livres');
+    if (data != null) {
+      final List<dynamic> liste = jsonDecode(data);
+      setState(() {
+        _livres = liste.map((m) => Livre.fromMap(m as Map<String, dynamic>)).toList();
+        _livresFiltres = List.from(_livres);
+      });
+    }
+  }
+
+  Future<void> _sauvegarderLivres() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('livres', jsonEncode(_livres.map((l) => l.toMap()).toList()));
+  }
 
   @override
   void dispose() {
@@ -36,11 +61,12 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
     });
   }
 
-  void _supprimerLivre(String id) {
+  Future<void> _supprimerLivre(String id) async {
     setState(() {
       _livres.removeWhere((livre) => livre.id == id);
       _livresFiltres.removeWhere((livre) => livre.id == id);
     });
+    await _sauvegarderLivres();
   }
 
   void _confirmerSuppression(Livre livre) {
@@ -56,7 +82,6 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
               child: const Text('Annuler'),
             ),
 
-            // ======= LIVE 1 : SUPPRESSION AVEC CONFIRMATION =======
             TextButton(
               onPressed: () {
                 Navigator.pop(ctx);
@@ -67,14 +92,13 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
                 style: TextStyle(color: Colors.red),
               ),
             ),
-            // ======= FIN LIVE 1 =======
           ],
         );
       },
     );
   }
 
-  void _mettreAJourLivre(Livre livre) {
+  Future<void> _mettreAJourLivre(Livre livre) async {
     setState(() {
       final index = _livres.indexWhere((l) => l.id == livre.id);
       if (index >= 0) {
@@ -84,6 +108,7 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
       }
       _filtrer(_searchController.text);
     });
+    await _sauvegarderLivres();
   }
 
   @override
@@ -124,7 +149,6 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
             ),
           ),
 
-          // ======= LIVE 3 : FILTRE DISPONIBLES SEULEMENT =======
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
@@ -146,7 +170,6 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
               ],
             ),
           ),
-          // ======= FIN LIVE 3 =======
 
           Expanded(
             child: _livresFiltres.isEmpty
@@ -170,7 +193,7 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
                             arguments: livre,
                           );
                           if (resultat != null && resultat is Livre) {
-                            _mettreAJourLivre(resultat);
+                            await _mettreAJourLivre(resultat);
                           } else {
                             setState(() {});
                           }
@@ -189,7 +212,7 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
           final resultat =
               await Navigator.pushNamed(context, '/formulaire');
           if (resultat != null) {
-            _mettreAJourLivre(resultat as Livre);
+            await _mettreAJourLivre(resultat as Livre);
           }
         },
         child: const Icon(Icons.add),
